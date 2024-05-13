@@ -250,10 +250,32 @@
                                     </div>
                                 </li>
                             </ul>
-                            <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
-                            <input type="submit" class="btn btn-primary form-control my-1" value="Start Processing" />
-                            <input type="submit" class="btn btn-primary form-control my-1" value="Ship Order" />
-                            <input type="submit" class="btn btn-danger form-control my-1" value="Cancel Order" />
+                            @if (Model.OrderOfHeader.PaymentStatus == Ts.PaymentStatusDelayedPayment &&
+                            Model.OrderOfHeader.OrderStatus == Ts.StatusShipped)
+                            {
+                                <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
+                            }
+                            @if (User.IsInRole(Ts.Role_Admin) || User.IsInRole(Ts.Role_Employee))
+                            {
+                                @if (Model.OrderOfHeader.OrderStatus == Ts.StatusApproved)
+                                {
+                                    <button type="submit" asp-action="StartProcessing"
+                                            class="btn btn-primary form-control my-1">
+                                        Start Processing
+                                    </button>
+                                }
+                                @if (Model.OrderOfHeader.OrderStatus == Ts.StatusInProcess)
+                                {
+                                    <button type="submit"   class="btn btn-primary form-control my-1">Ship Order</button>
+                                } 
+
+                                @if (Model.OrderOfHeader.OrderStatus != Ts.StatusRefunded &&
+                                  Model.OrderOfHeader.OrderStatus != Ts.StatusCancelled &&
+                                  Model.OrderOfHeader.OrderStatus != Ts.StatusShipped)
+                                {
+                                    <button  type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
