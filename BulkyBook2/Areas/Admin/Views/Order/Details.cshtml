@@ -130,7 +130,7 @@
                                 <div class="col-9">
                                     @if (User.IsInRole(Ts.Role_Admin) || User.IsInRole(Ts.Role_Employee))
                                     {
-                                        <input asp-for="OrderOfHeader.Carrier" type="text" class="form-control" />
+                                        <input asp-for="OrderOfHeader.Carrier" id="carrier" type="text" class="form-control" />
                                         <span asp-validation-for="OrderOfHeader.Carrier" class="text-danger"></span>
                                     }
                                     else
@@ -144,7 +144,7 @@
                                 <div class="col-9">
                                     @if (User.IsInRole(Ts.Role_Admin) || User.IsInRole(Ts.Role_Employee))
                                     {
-                                        <input asp-for="OrderOfHeader.TrackingNumber" type="text" class="form-control" />
+                                        <input asp-for="OrderOfHeader.TrackingNumber"  id="trackingNumber" type="text" class="form-control" />
                                        
                                     }
                                     else
@@ -266,7 +266,7 @@
                                 }
                                 @if (Model.OrderOfHeader.OrderStatus == Ts.StatusInProcess)
                                 {
-                                    <button type="submit"   class="btn btn-primary form-control my-1">Ship Order</button>
+                                    <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-primary form-control my-1">Ship Order</button>
                                 } 
 
                                 @if (Model.OrderOfHeader.OrderStatus != Ts.StatusRefunded &&
@@ -283,3 +283,30 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateInput() {
+            if (document.getElementById("trackingNumber").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter tracking number!',
+                });
+                return false;
+            }
+            if (document.getElementById("carrier").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter carrier!',
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+}
