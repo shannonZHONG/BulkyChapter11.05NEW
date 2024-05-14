@@ -60,11 +60,13 @@ namespace BulkyBook2.Areas.Customer.Controllers
                 //add cart record
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
                 _unitOfWork.Save();
-               
-
-
+                HttpContext.Session.SetInt32(Ts.SessionCart,
+                _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
+                
+                
+                
             }
-
+            TempData["success"] = "Cart updated successfully";
             return RedirectToAction(nameof(Index));
         }
 
