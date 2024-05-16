@@ -191,7 +191,7 @@ namespace BulkyBook2.Areas.Customer.Controllers
                     _unitOfWork.OrderOfHeader.UpdateStatus(id, Ts.StatusApproved, Ts.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
-
+                HttpContext.Session.Clear();
 
             }
 
